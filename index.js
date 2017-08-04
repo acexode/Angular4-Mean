@@ -1,12 +1,16 @@
 const express = require('express'),
     app = express(),
-    path = require('path')
-mongoose = require('mongoose'),
-    config = require('./config/db.js');
+    router = express.Router(),
+    path = require('path'),
+    expressValidator = require('express-validator'),
+    mongoose = require('mongoose'),
+    bodyParser = require('body-parser'),
+    config = require('./config/db.js'),
+    auth = require('./routes/auth.js')(router)
 
 
 mongoose.Promise = global.Promise
-mongoose.createConnection(config.uri, (err) => {
+mongoose.connect(config.uri, (err) => {
     if (err) {
         console.log(`could not connect to db`, err)
     } else {
@@ -14,7 +18,29 @@ mongoose.createConnection(config.uri, (err) => {
 
     }
 });
+
+// parse application/x-www-form-urlencoded 
+app.use(bodyParser.urlencoded({ extended: false }))
+    // parse application/json 
+app.use(bodyParser.json())
+app.use(expressValidator({
+    errorFormatter: function(param, msg, value) {
+        var namespace = param.split('.'),
+            root = namespace.shift(),
+            formParam = root;
+
+        while (namespace.length) {
+            formParam += '[' + namespace.shift() + ']';
+        }
+        return {
+            param: formParam,
+            msg: msg,
+            value: value
+        };
+    }
+}));
 app.use(express.static(__dirname + '/client/dist/'))
+app.use('/auth', auth)
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/client/dist/index.html'));
 });
