@@ -1,0 +1,64 @@
+<div class="container">
+    <div class="row">
+        <form [formGroup]="form" (submit)="onRegister()" class="col s12">
+            <div class="row">
+                <div [ngClass]="{'has-error':(form.controls.username.errors && form.controls.username.dirty), 
+                'has-success':!form.controls.username.errors}" class="input-field col s12">
+                    <input name="username" type="text" formControlName="username" class="validate">
+                    <label for="username">Username</label>
+                    <ul class="info">
+                        <li *ngIf="form.controls.username.errors?.required && form.controls.username.dirty">This field is required</li>
+                        <li *ngIf="form.controls.username.errors?.validateUser && form.controls.username.dirty">Username must not have special characters</li>
+                        <li *ngIf="form.controls.username.errors?.minlength || form.controls.username.errors?.maxlength">Username length must be greater than 3 and less than 30</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div [ngClass]="{'has-error':(form.controls.email.errors && form.controls.email.dirty), 
+                'has-success':!form.controls.email.errors}" class="input-field col s12">
+                    <input name="email" type="email" formControlName="email" class="validate">
+                    <label for="email">Email</label>
+                    <ul class="info">
+                        <li *ngIf="form.controls.email.errors?.required && form.controls.email.dirty">This field is required</li>
+                        <li *ngIf="form.controls.email.errors?.validateEmail && form.controls.email.dirty">Invalid email</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <div [ngClass]="{'has-error':(form.controls.password.errors && form.controls.password.dirty), 
+                'has-success':!form.controls.password.errors}" class="input-field col s12">
+                    <input name="password" type="password" formControlName="password" class="validate">
+                    <label for="password">Password</label>
+                    <ul class="info">
+                        <li *ngIf="form.controls.password.errors?.required && form.controls.password.dirty">This field is required</li>
+                        <li *ngIf="(form.controls.password.errors?.minlength || form.controls.password.errors?.maxlength) && form.controls.password.dirty">password length must be greater than 8 and less than 30</li>
+                        <li *ngIf="form.controls.password.errors?.validatePassword && form.controls.password.dirty">Password must contain at 8 least 1 numeric, lowercase, uppercase letters (Example: Password2017) </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div [ngClass]="{'has-error':(form.controls.confirm.errors && form.controls.confirm.dirty) || (form.errors?.MatchingPasswords && form.controls.confirm.dirty), 
+                'has-success':!form.controls.confirm.errors && !form.errors?.MatchingPasswords}" class="input-field col s12">
+                    <input name="confirm" type="password" formControlName="confirm" class="validate">
+                    <label for="confirm">Confirm Password</label>
+                    <ul class="info">
+                        <li *ngIf="form.controls.confirm.errors?.required && form.controls.confirm.dirty">This field is required</li>
+                        <li *ngIf="form.errors?.MatchingPasswords && form.controls.confirm.dirty">Password do not match</li>
+                    </ul>
+                </div>
+            </div>
+            <button [disabled]="!form.valid" class="btn waves-effect waves-light" type="submit" name="action">Submit
+              <i class="material-icons right">send</i>
+            </button>
+
+        </form>
+    </div>
+    <div class="row">
+        <p>Username: {{form.controls.username.value}}</p>
+        <p>Email: {{form.controls.email.value}}</p>
+        <p>Password: {{form.controls.password.value}}</p>
+        <p>Confirm: {{form.controls.confirm.value}}</p>
+    </div>
+</div>
