@@ -1,4 +1,5 @@
 const express = require('express'),
+    cors = require('cors'),
     app = express(),
     router = express.Router(),
     path = require('path'),
@@ -19,7 +20,10 @@ mongoose.connect(config.uri, (err) => {
     }
 });
 
-// parse application/x-www-form-urlencoded 
+app.use(cors({
+        origin: 'http://localhost:4200'
+    }))
+    // parse application/x-www-form-urlencoded 
 app.use(bodyParser.urlencoded({ extended: false }))
     // parse application/json 
 app.use(bodyParser.json())
