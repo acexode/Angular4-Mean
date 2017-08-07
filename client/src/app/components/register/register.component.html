@@ -1,26 +1,33 @@
 <div class="container">
+    <div class="row show-hide-message">
+        <div [ngClass]="MessageClass">
+            {{message}}
+        </div>
+    </div>
     <div class="row">
         <form [formGroup]="form" (submit)="onRegister()" class="col s12">
             <div class="row">
-                <div [ngClass]="{'has-error':(form.controls.username.errors && form.controls.username.dirty), 
-                'has-success':!form.controls.username.errors}" class="input-field col s12">
-                    <input name="username" type="text" formControlName="username" class="validate">
+                <div [ngClass]="{'has-error':(form.controls.username.errors && form.controls.username.dirty) ||
+                (!usernameValid && form.controls.username.dirty),'has-success':!form.controls.username.errors && usernameValid}" class="input-field col s12">
+                    <input name="username" type="text" formControlName="username" (blur)="checkUsername()" class="validate">
                     <label for="username">Username</label>
                     <ul class="info">
                         <li *ngIf="form.controls.username.errors?.required && form.controls.username.dirty">This field is required</li>
                         <li *ngIf="form.controls.username.errors?.validateUser && form.controls.username.dirty">Username must not have special characters</li>
                         <li *ngIf="form.controls.username.errors?.minlength || form.controls.username.errors?.maxlength">Username length must be greater than 3 and less than 30</li>
+                        <li *ngIf="usernameMessage">{{usernameMessage}}</li>
                     </ul>
                 </div>
             </div>
             <div class="row">
-                <div [ngClass]="{'has-error':(form.controls.email.errors && form.controls.email.dirty), 
-                'has-success':!form.controls.email.errors}" class="input-field col s12">
-                    <input name="email" type="email" formControlName="email" class="validate">
+                <div [ngClass]="{'has-error':(form.controls.email.errors && form.controls.email.dirty) ||
+                (!emailValid && form.controls.email.dirty), 'has-success':!form.controls.email.errors && emailValid}" class="input-field col s12">
+                    <input name="email" type="email" formControlName="email" (blur)="checkEmail()" class="validate">
                     <label for="email">Email</label>
                     <ul class="info">
                         <li *ngIf="form.controls.email.errors?.required && form.controls.email.dirty">This field is required</li>
                         <li *ngIf="form.controls.email.errors?.validateEmail && form.controls.email.dirty">Invalid email</li>
+                        <li *ngIf="emailMessage">{{emailMessage}}</li>
                     </ul>
                 </div>
             </div>
@@ -49,7 +56,7 @@
                     </ul>
                 </div>
             </div>
-            <button [disabled]="!form.valid" class="btn waves-effect waves-light" type="submit" name="action">Submit
+            <button [disabled]="!form.valid || processing ||!emailValid ||!usernameValid" class="btn waves-effect waves-light" type="submit" name="action">Submit
               <i class="material-icons right">send</i>
             </button>
 
