@@ -1,0 +1,25 @@
+.container {
+    margin-top: 2%;
+}
+
+.has-error {
+    color: #b71c1c
+}
+
+.has-success {
+    color: #009688
+}
+
+.alert {
+    padding: 5px;
+    border-radius: 4px;
+    color: #fff
+}
+
+.alert-danger {
+    background: #ef5350;
+}
+
+.alert-success {
+    background: #009688
+}

@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="row show-hide-message">
+        <div [ngClass]="MessageClass">
+            {{message}}
+        </div>
+    </div>
+    <div class="row">
+        <form [formGroup]="form" (submit)="onLogin()" class="col s12">
+            <div class="row">
+                <div [ngClass]="{'has-error':(form.controls.username.errors && form.controls.username.dirty) 
+                ,'has-success':form.controls.username.valid && form.controls.username.dirty}" class="input-field col s12">
+                    <input name="username" type="text" formControlName="username" (blur)="checkUsername()" class="validate">
+                    <label for="username">Username</label>
+                    <ul class="info">
+                        <li *ngIf="form.controls.username.errors?.required && form.controls.username.dirty">This field is required</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <div [ngClass]="{'has-error':form.controls.password.errors && form.controls.password.dirty, 
+                'has-success':form.controls.password.valid && form.controls.password.dirty}" class="input-field col s12">
+                    <input name="password" type="password" formControlName="password" class="validate">
+                    <label for="password">Password</label>
+                    <ul class="info">
+                        <li *ngIf="form.controls.password.errors?.required && form.controls.password.dirty">This field is required</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button [disabled]="!form.valid || processing" class="btn waves-effect waves-light" type="submit" name="action">Submit
+              <i class="material-icons right">send</i>
+            </button>
+
+        </form>
+    </div>
+
+</div>

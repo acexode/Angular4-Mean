@@ -11,7 +11,7 @@ const express = require('express'),
 
 
 mongoose.Promise = global.Promise
-mongoose.connect(config.uri, (err) => {
+mongoose.connect(config.uri, { useMongoClient: true }, (err) => {
     if (err) {
         console.log(`could not connect to db`, err)
     } else {
