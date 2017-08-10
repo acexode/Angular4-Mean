@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 
 import { AuthService } from "../../services/auth.service";
+import { AuthGuard } from "../../guards/auth-guard";
 
 @Component({
   selector: 'app-login',
@@ -14,8 +15,14 @@ export class LoginComponent implements OnInit {
   message;
   MessageClass;
   processing = false
+  previousUrl
   
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router ) {
+  constructor(
+    private formBuilder: FormBuilder, 
+    private authService: AuthService, 
+    private router: Router,
+    private authGuard: AuthGuard 
+  ) {
     this.createForm()
    }
 
@@ -52,7 +59,11 @@ export class LoginComponent implements OnInit {
         this.message = data.message
         this.authService.storeUserData(data.token, data.user)
         setTimeout(()=>{
-          this.router.navigate(['/dashboard'])
+          if(this.previousUrl){
+            this.router.navigate([this.previousUrl])
+          }else{
+            this.router.navigate(['/dashboard'])
+          }
         },2000)
       }
     })
@@ -61,6 +72,12 @@ export class LoginComponent implements OnInit {
   //     this.authService.logout()
   //   }
   ngOnInit() {
+    if(this.authGuard.redirectUrl){
+      this.MessageClass = 'alert alert-danger'
+      this.message = 'You are not logged in'
+      this.previousUrl = this.authGuard.redirectUrl
+      this.authGuard.redirectUrl = undefined
+    }
   }
 
 }
