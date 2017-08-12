@@ -6,7 +6,7 @@ import { tokenNotExpired } from 'angular2-jwt';
 
 @Injectable()
 export class AuthService {
-  domain = 'http://localhost:3000'
+  domain = 'http://localhost:3000/'
   authToken
   user
   options
@@ -26,19 +26,19 @@ export class AuthService {
    this.authToken = token
    }
   registerUser(User){
-    return this.http.post(this.domain + '/auth/register', User)
+    return this.http.post(this.domain + 'auth/register', User)
     .map(res => res.json())
   }
   checkUsername(username){
-    return this.http.get(this.domain + '/auth/checkUsername/' +username)
+    return this.http.get(this.domain + 'auth/checkUsername/' +username)
     .map(res => res.json())
   }
   checkEmail(email){
-    return this.http.get(this.domain + '/auth/checkEmail/'+email)
+    return this.http.get(this.domain + 'auth/checkEmail/'+email)
     .map(res => res.json())
   }
   login(user){
-    return this.http.post(this.domain + '/auth/login', user )
+    return this.http.post(this.domain + 'auth/login', user )
     .map(res => res.json())
   }
   logOut(){

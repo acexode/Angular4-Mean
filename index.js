@@ -7,7 +7,8 @@ const express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
     config = require('./config/db.js'),
-    auth = require('./routes/auth.js')(router)
+    auth = require('./routes/auth.js')(router),
+    blog = require('./routes/blog.js')(router)
 
 
 mongoose.Promise = global.Promise
@@ -45,6 +46,7 @@ app.use(expressValidator({
 }));
 app.use(express.static(__dirname + '/client/dist/'))
 app.use('/auth', auth)
+app.use('/blog', blog)
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/client/dist/index.html'));
 });
