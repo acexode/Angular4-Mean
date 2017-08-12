@@ -41,5 +41,19 @@ module.exports = (router) => {
         }
     });
 
+    router.get('/post', (req, res) => {
+        Blog.find({}, {}, (err, posts) => {
+            if (err) {
+                res.json({ success: false, message: err })
+            } else {
+                if (!posts) {
+                    res.json({ success: false, message: 'no post' })
+                } else {
+                    res.json({ success: true, posts: posts })
+                }
+            }
+        }).sort({ '_id': -1 })
+    })
+
     return router
 }

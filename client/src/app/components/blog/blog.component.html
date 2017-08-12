@@ -52,43 +52,51 @@
 <!--Blog Form  -->
 
 <div *ngIf="!newPost">
-    <div class="row">
+    {{username}}
+    <div class="row" *ngFor="let blog of allBlogs">
         <div class="col s12 m12">
             <div class="card">
-                <div class="card-image">
 
-                    <span class="card-title">Card Title</span>
-                </div>
                 <div class="card-content">
-                    <span class="card-title">Card Title</span>
-                    <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                    <h3> {{blog.title}}</h3>
+                    <p>{{blog.body}}</p>
                 </div>
                 <div class="card-action">
-                    <p><strong>Posted by: </strong>Acecode</p>
-                    <p><strong>Date: </strong>Aug 11 2017</p>
-                    <div class="chip">
-                        {{likes}}
-                        <i (click)="addLike()" class="mag material-icons">thumb_up</i>
-                    </div>
-                    <div class="chip">
-                        {{dislikes}}
-                        <i (click)="addDislike()" class="mag material-icons">thumb_down</i>
+                    <p><strong>Posted by: </strong>{{blog.createdBy}}</p>
+                    <p><strong>Date: </strong>{{blog.createdAt | date: 'MMM dd, yyyy'}}</p>
+                    <div *ngIf="username === blog.createdBy">
+                        <div class="chip">
+                            {{blog.likes}}
+                            <i (click)="addLike()" class="mag material-icons">thumb_up</i>
+                        </div>
+                        <div class="chip">
+                            {{blog.dislikes}}
+                            <i (click)="addDislike()" class="mag material-icons">thumb_down</i>
+                        </div>
                     </div>
 
+                    <div>
+                        <div *ngIf="username===blog.createdBy" class="row">
+                            <div style="position: relative; height: 70px;">
+                                <div class="fixed-action-btn horizontal click-to-toggle">
+                                    <a class="btn-floating btn-large blue">
+                                        <i class="material-icons">menu</i>
+                                    </a>
+                                    <ul>
+
+                                        <li><a routerLink="['/edit/', blog._id]" class="btn-floating red"><i class="material-icons">delete</i></a></li>
+                                        <li><a routerLink="['/delete/', blog._id]" class="btn-floating yellow darken-1"><i class="material-icons">create</i></a></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="fixed-action-btn horizontal click-to-toggle">
-    <a class="btn-floating btn-large red">
-        <i class="material-icons">menu</i>
-    </a>
-    <ul>
-        <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
-        <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
-        <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
-        <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
-    </ul>
 </div>

@@ -19,10 +19,14 @@ export class BlogService {
       })
     })
   }
-  blogPost(blog){
+  postBlog(blog){
     this.createHeaders()
     return this.http.post(this.domain+'blog/newBlog',blog, this.options).map(res => res.json())
 
+  }
+  getBlogs(){
+    this.createHeaders()
+    return this.http.get(this.domain+'blog/post', this.options).map(res => res.json())
   }
 
 }

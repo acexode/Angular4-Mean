@@ -31,3 +31,12 @@
 .alert-success {
     background: #009688
 }
+
+.fixed-action-btn {
+    position: absolute;
+    right: 0;
+    top: 23px;
+    padding-top: 15px;
+    margin-bottom: 0;
+    z-index: 997;
+}
