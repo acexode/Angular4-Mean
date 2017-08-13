@@ -53,7 +53,43 @@ module.exports = (router) => {
                 }
             }
         }).sort({ '_id': -1 })
-    })
+    });
+    router.get('/post/:id', (req, res) => {
+        var params = req.params.id
+        Blog.findOne({ _id: params }, {}, (err, posts) => {
+            if (err) {
+                res.json({ success: false, message: err })
+            } else {
+                if (!posts) {
+                    res.json({ success: false, message: 'no post' })
+                } else {
+                    res.json({ success: true, posts: posts })
+                }
+            }
+        })
+    });
+    router.put('/post/:id', (req, res) => {
+        var params = req.params.id
+        Blog.findOne({ _id: params }, {}, (err, posts) => {
+            if (err) {
+                res.json({ success: false, message: err })
+            } else {
+                if (!posts) {
+                    res.json({ success: false, message: 'no post' })
+                } else {
+                    posts.title = req.body.title
+                    posts.body = req.body.body
+                    posts.save((err) => {
+                        if (err) {
+                            res.json({ success: false, message: err })
+                        } else {
+                            res.json({ success: true, message: 'post updated' })
+                        }
+                    })
+                }
+            }
+        })
+    });
 
     return router
 }

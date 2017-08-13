@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="row show-hide-message">
+        <div [ngClass]="MessageClass">
+            {{message}}
+        </div>
+    </div>
+    <div class="row">
+        <button (click)="goBack()" class="btn-large waves-effect waves-light grey">Back
+      <i class="material-icons left">keyboard_backspace</i>
+  </button>
+    </div>
+    <div class="row">
+        <form [formGroup]="form" (submit)="onUpdate()" *ngIf="!loading" class="col s12">
+            <div class="row">
+                <div [ngClass]="{'has-success':form.controls.title.valid,'has-error':form.controls.title.dirty && form.controls.title.errors}" class="input-field col s12">
+                    <input [disabled]="processing" autocomplete="off" [(ngModel)]="blog.title" name="title" type="text" formControlName="title" class="validate">
+                    <label for="title">title</label>
+                    <ul class="info">
+                        <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.required">This field is required.</li>
+                        <li *ngIf="(form.controls.title.dirty && form.controls.title.errors?.minlength) || (form.controls.title.dirty && form.controls.title.errors?.maxlength)">Max length: 50, Min length: 5</li>
+                        <li *ngIf="form.controls.title.dirty && form.controls.title.errors?.alphaNumeric">Must be a letter or number</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div [ngClass]="{'has-success': form.controls.body.valid, 'has-error': form.controls.body.dirty && form.controls.body.errors}" class="input-field col s12">
+                    <textarea [disabled]="processing" autocomplete="off" [(ngModel)]="blog.body" name="body" formControlName="body" class="materialize-textarea"></textarea>
+                    <label for="body">Body</label>
+                    <ul class="info">
+                        <li *ngIf="form.controls.body.dirty && form.controls.body.errors?.required">This field is required.</li>
+                        <li *ngIf="(form.controls.body.dirty && form.controls.body.errors?.minlength) || (form.controls.body.dirty && form.controls.body.errors?.maxlength)">Max length: 500, Min length: 5</li>
+                    </ul>
+                </div>
+            </div>
+            <a [routerLink]="['/delete/', blog._id]">
+                <button [disabled]="processing" class="  btn-large waves-effect waves-light red">Delete
+              <i class="material-icons left">delete</i>
+            </button>
+            </a>
+            <button [disabled]="processing" type="submit" class="btn-large waves-effect waves-light blue">Save
+              <i class="material-icons left">save</i>
+            </button>
+
+
+        </form>
+    </div>
+</div>

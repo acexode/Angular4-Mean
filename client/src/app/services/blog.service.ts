@@ -28,5 +28,13 @@ export class BlogService {
     this.createHeaders()
     return this.http.get(this.domain+'blog/post', this.options).map(res => res.json())
   }
+  getSingle(id){
+    this.createHeaders()
+    return this.http.get(this.domain+'blog/post/'+id, this.options).map(res => res.json())
+  }
+  updateBlog(id, blog){
+    this.createHeaders()
+    return this.http.put(this.domain+'blog/post/'+id,blog, this.options).map(res => res.json())
+  }
 
 }

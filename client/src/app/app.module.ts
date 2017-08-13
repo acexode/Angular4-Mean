@@ -18,6 +18,7 @@ import { AuthGuard } from "./guards/auth-guard";
 import { notAuthGuard } from "./guards/notAuth-guard";
 import { BlogComponent } from "./components/blog/blog.component";
 import { BlogService } from "./services/blog.service";
+import { EditComponent } from "./components/blog/edit/edit.component";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { BlogService } from "./services/blog.service";
     RegisterComponent,
     LoginComponent,
     ProfileComponent,
-    BlogComponent
+    BlogComponent,
+    EditComponent
    
     
     
