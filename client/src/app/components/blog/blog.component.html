@@ -32,8 +32,11 @@
 
         <div class="row">
             <div [ngClass]="{'has-success': form.controls.body.valid, 'has-error': form.controls.body.dirty && form.controls.body.errors}" class="input-field col s12">
-                <textarea autocomplete="off" name="body" formControlName="body" class="materialize-textarea"></textarea>
-                <label for="body">Body</label>
+                <!-- <textarea autocomplete="off" name="body" formControlName="body" class="materialize-textarea"></textarea>
+                <label for="body">Body</label> -->
+                <ckeditor formControlName="body" name="body" debounce="500">
+
+                </ckeditor>
                 <ul class="info">
                     <li *ngIf="form.controls.body.dirty && form.controls.body.errors?.required">This field is required.</li>
                     <li *ngIf="(form.controls.body.dirty && form.controls.body.errors?.minlength) || (form.controls.body.dirty && form.controls.body.errors?.maxlength)">Max length: 500, Min length: 5</li>
@@ -59,7 +62,7 @@
 
                 <div class="card-content">
                     <h3> {{blog.title}}</h3>
-                    <p>{{blog.body}}</p>
+                    <p innerHTML="{{blog.body}}"></p>
                 </div>
                 <div class="card-action">
                     <p><strong>Posted by: </strong>{{blog.createdBy}}</p>
@@ -76,8 +79,8 @@
                     </div>
 
                     <div>
-                        <div *ngIf="username===blog.createdBy" class="row">
-                            <div style="position: relative; height: 70px;">
+                        <div *ngIf="username===blog.createdBy">
+                            <div style="position: relative; height: 90px;">
                                 <div class="fixed-action-btn horizontal click-to-toggle">
                                     <a class="btn-floating btn-large blue">
                                         <i class="material-icons">menu</i>
@@ -92,8 +95,6 @@
                             </div>
 
                         </div>
-
-
                     </div>
                 </div>
             </div>

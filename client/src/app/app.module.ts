@@ -3,8 +3,9 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
-import { ReactiveFormsModule } from '@angular/forms';  // <-- #1 import module
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';  // <-- #1 import module
 import { FlashMessagesModule } from 'angular2-flash-messages';
+import {CKEditorModule} from 'ng2-ckeditor';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -40,7 +41,9 @@ import { EditComponent } from "./components/blog/edit/edit.component";
     AppRoutingModule,
     ReactiveFormsModule,
     HttpModule,
-    FlashMessagesModule
+    FlashMessagesModule,
+    FormsModule,
+    CKEditorModule
   ],
   providers: [AuthService, BlogService, AuthGuard,notAuthGuard],
   bootstrap: [AppComponent]

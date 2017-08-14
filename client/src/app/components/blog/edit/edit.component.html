@@ -1,4 +1,4 @@
-<div class="container">
+<div class="continer">
     <div class="row show-hide-message">
         <div [ngClass]="MessageClass">
             {{message}}
@@ -22,10 +22,21 @@
                     </ul>
                 </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div [ngClass]="{'has-success': form.controls.body.valid, 'has-error': form.controls.body.dirty && form.controls.body.errors}" class="input-field col s12">
                     <textarea [disabled]="processing" autocomplete="off" [(ngModel)]="blog.body" name="body" formControlName="body" class="materialize-textarea"></textarea>
                     <label for="body">Body</label>
+                    <ul class="info">
+                        <li *ngIf="form.controls.body.dirty && form.controls.body.errors?.required">This field is required.</li>
+                        <li *ngIf="(form.controls.body.dirty && form.controls.body.errors?.minlength) || (form.controls.body.dirty && form.controls.body.errors?.maxlength)">Max length: 500, Min length: 5</li>
+                    </ul>
+                </div>
+            </div> -->
+            <div class="row">
+                <div [ngClass]="{'has-success': form.controls.body.valid, 'has-error': form.controls.body.dirty && form.controls.body.errors}" class="input-field col s12">
+                    <ckeditor [disabled]="processing" formControlName="body" name="body" [(ngModel)]="blog.body" debounce="500">
+
+                    </ckeditor>
                     <ul class="info">
                         <li *ngIf="form.controls.body.dirty && form.controls.body.errors?.required">This field is required.</li>
                         <li *ngIf="(form.controls.body.dirty && form.controls.body.errors?.minlength) || (form.controls.body.dirty && form.controls.body.errors?.maxlength)">Max length: 500, Min length: 5</li>
@@ -45,3 +56,5 @@
         </form>
     </div>
 </div>
+<br>
+<div class="container"><br></div>
