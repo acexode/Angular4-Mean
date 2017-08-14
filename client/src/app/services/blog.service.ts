@@ -36,5 +36,9 @@ export class BlogService {
     this.createHeaders()
     return this.http.put(this.domain+'blog/post/'+id,blog, this.options).map(res => res.json())
   }
+  deleteBlog(id){
+    this.createHeaders()
+    return this.http.delete(this.domain+'blog/post/'+id, this.options).map(res => res.json())
+  }
 
 }

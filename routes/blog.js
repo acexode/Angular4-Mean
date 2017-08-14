@@ -90,6 +90,16 @@ module.exports = (router) => {
             }
         })
     });
+    router.delete('/post/:id', (req, res) => {
+        var params = req.params.id
+        Blog.findByIdAndRemove({ _id: params }, {}, (err, posts) => {
+            if (err) {
+                res.json({ success: false, message: 'Invalid Id' })
+            } else {
+                res.json({ success: true, message: 'post removed' })
+            }
+        })
+    });
 
     return router
 }

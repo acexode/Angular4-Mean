@@ -1,29 +1,29 @@
 {
-  "name": "mean-ng4",
-  "version": "1.0.0",
-  "description": "Mean Stack Angular-4 Application",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/acexode/Angular4-Mean.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/acexode/Angular4-Mean/issues"
-  },
-  "homepage": "https://github.com/acexode/Angular4-Mean#readme",
-  "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^1.17.2",
-    "cors": "^2.8.4",
-    "express": "^4.15.3",
-    "express-validator": "^3.2.1",
-    "jsonwebtoken": "^7.4.2",
-    "mongoose": "^4.11.5"
-  },
-  "devDependencies": {}
+    "name": "mean-ng4",
+    "version": "1.0.0",
+    "description": "Mean Stack Angular-4 Application",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/acexode/Angular4-Mean.git"
+    },
+    "author": "Acexode",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/acexode/Angular4-Mean/issues"
+    },
+    "homepage": "https://github.com/acexode/Angular4-Mean#readme",
+    "dependencies": {
+        "bcrypt-nodejs": "0.0.3",
+        "body-parser": "^1.17.2",
+        "cors": "^2.8.4",
+        "express": "^4.15.3",
+        "express-validator": "^3.2.1",
+        "jsonwebtoken": "^7.4.2",
+        "mongoose": "^4.11.5"
+    },
+    "devDependencies": {}
 }

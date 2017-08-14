@@ -118,6 +118,16 @@ export class BlogComponent implements OnInit {
       this.allBlogs = blogs.posts
     })
   }
+  deleteBlog(id){
+    this.blogService.deleteBlog(id).subscribe(res=>{
+      if(!res){
+        this.message = 'unable to delete blog'
+        this.MessageClass = 'alert alert-info'
+      }else{
+        this.getBlogs()
+      }
+    })
+  }
   goBack(){
     window.location.reload()
   }
