@@ -9,7 +9,7 @@
             <div class="row">
                 <div [ngClass]="{'has-error':(form.controls.username.errors && form.controls.username.dirty) 
                 ,'has-success':form.controls.username.valid && form.controls.username.dirty}" class="input-field col s12">
-                    <input name="username" type="text" formControlName="username" (blur)="checkUsername()" class="validate">
+                    <input name="username" type="text" formControlName="username" class="validate">
                     <label for="username">Username</label>
                     <ul class="info">
                         <li *ngIf="form.controls.username.errors?.required && form.controls.username.dirty">This field is required</li>
