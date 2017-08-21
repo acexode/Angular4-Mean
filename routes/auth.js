@@ -109,21 +109,21 @@ module.exports = (router) => {
         }
     });
     // router.use((req, res, next) => {
-    //     const token = req.headers['authorization']
-    //     if (!token) {
-    //         res.json({ success: false, message: 'token not provided' })
-    //     } else {
-    //         jwt.verify(token, config.secret, (err, decoded) => {
-    //             if (err) {
-    //                 res.json({ success: false, message: 'token invalid:' + err })
+    //         const token = req.headers['authorization']
+    //         if (!token) {
+    //             res.json({ success: false, message: 'token not provided' })
+    //         } else {
+    //             jwt.verify(token, config.secret, (err, decoded) => {
+    //                 if (err) {
+    //                     res.json({ success: false, message: 'token invalid:' + err })
 
-    //             } else {
-    //                 req.decoded = decoded
-    //                 next();
-    //             }
-    //         })
-    //     }
-    // })
+    //                 } else {
+    //                     req.decoded = decoded
+    //                     next();
+    //                 }
+    //             })
+    //         }
+    //     })
     // router.get('/profile', (req, res) => {
     //     User.findOne({ _id: req.decoded.userId }).select('username email').exec((err, user) => {
     //         if (err) {

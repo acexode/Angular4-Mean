@@ -67,15 +67,42 @@
                 <div class="card-action">
                     <p><strong>Posted by: </strong>{{blog.createdBy}}</p>
                     <p><strong>Date: </strong>{{blog.createdAt | date: 'MMM dd, yyyy'}}</p>
-                    <div *ngIf="username === blog.createdBy">
-                        <div class="chip">
-                            {{blog.likes}}
-                            <i (click)="addLike()" class="mag material-icons">thumb_up</i>
+                    <div class="row">
+                        <div *ngIf="username !== blog.createdBy">
+
+                            <div [ngClass]="color" class="chip">
+                                {{blog.likes}}
+                                <i (click)="addLike(blog._id)" class="mag material-icons">thumb_up</i>
+                            </div>
+                            <div class="chip">
+                                {{blog.dislikes}}
+                                <i (click)="addDislike(blog._id)" class="mag material-icons">thumb_down</i>
+                            </div>
+
                         </div>
                         <div class="chip">
-                            {{blog.dislikes}}
-                            <i (click)="addDislike()" class="mag material-icons">thumb_down</i>
+                            {{blog.comments.length}}
+                            <i (click)="Showcomments(blog._id)" class="mag material-icons">mode_comment</i>
                         </div>
+                        <div *ngFor="let comments of blog.comments">
+                            <div *ngIf="commentBox === blog._id" class="chip">
+                                <img src="https://cdn1.iconfinder.com/data/icons/crimes-and-justice/100/14-48.png" alt="avater"> <a>{{comments.commentator }}</a> {{comments.comment}}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div *ngIf="commentBox === blog._id" class="row">
+                        <form [formGroup]="commentform" (submit)="postComment(blog._id)" class="col s12">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <textarea formControlName="comment" name="comment" id="textarea1" class="materialize-textarea"></textarea>
+                                    <label for="textarea1">Textarea</label>
+                                </div>
+                                <button [disabled]="!commentform.valid" type="submit" name="button" class="btn waves-effect teal waves-light">Submit
+                                    <i class="material-icons right">send</i>
+                                  </button>
+                            </div>
+                        </form>
                     </div>
 
                     <div>

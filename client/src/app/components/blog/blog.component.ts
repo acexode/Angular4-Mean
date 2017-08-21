@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup, Validators }            from '@angular/forms';
+import { LowerCasePipe } from '@angular/common';
+
 import { AuthService } from "../../services/auth.service";
 import { BlogService } from "../../services/blog.service";
 @Component({
@@ -10,7 +12,9 @@ import { BlogService } from "../../services/blog.service";
 export class BlogComponent implements OnInit {
   MessageClass
   message
+  color
   form
+  commentform
   newPost = false
   loadingPage = false
   likes = 0
@@ -18,6 +22,8 @@ export class BlogComponent implements OnInit {
   processing = false
   allBlogs
   username
+  commentBox
+  allComments  = false
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -25,7 +31,9 @@ export class BlogComponent implements OnInit {
     // private router: Router
   ) { 
     this.createForm();
+    this.createComment();
   }
+  // new post form
   createForm(){
     this.form = this.formBuilder.group({
       title: ['', Validators.compose([
@@ -42,6 +50,14 @@ export class BlogComponent implements OnInit {
        
       ])]
       
+    })
+  }
+  //  comment form
+  createComment(){
+    this.commentform = this.formBuilder.group({
+      comment: ['', Validators.compose([
+        Validators.required
+      ])]
     })
   }
    disableForm(){
@@ -68,19 +84,51 @@ export class BlogComponent implements OnInit {
   newForm(){
     this.newPost = true
   }
-  addLike(){
-    this.likes+=1
+  // show comments area
+  Showcomments(id){
+    this.blogService.getSingle(id).subscribe(blogs =>{
+      if(this.commentBox != blogs.posts._id ) {
+        this.commentBox = blogs.posts._id
+        this.allComments = true 
+        this.commentform.reset()
+      } else{
+        this.commentBox = '' 
+        this.allComments = false 
+        this.commentform.reset()
+      }     
+      
+    })
+    
   }
-  addDislike(){
-    this.dislikes+=1
+  // post comment
+  postComment(id){
+    const comments = this.commentform.get('comment').value
+    this.blogService.createComment(id, comments, this.username).subscribe(data =>{
+      if(!data.success){
+        this.MessageClass = 'alert alert-danger'
+        this.message = data.message
+        
+      }else{
+        this.MessageClass = 'alert alert-success'
+        this.message = data.message
+        this.commentform.reset();
+        this.commentBox = null
+        this.reloadBlog()
+        setTimeout(()=>{
+          this.MessageClass = ''
+          this.message = ''
+        },3000)
+        
+      }
+    })
+    console.log(id)
+    console.log(comments)
+    console.log(this.username)
+    
   }
-  reloadBlog(){
-    this.loadingPage = true
-    this.getBlogs()
-    setTimeout(()=>{
-      this.loadingPage = false
-    },4000)
-  }
+ 
+
+  // on form submit
   onSubmit(){
     this.processing = true;
     this.disableForm()
@@ -113,11 +161,36 @@ export class BlogComponent implements OnInit {
     })
     
   }
+  // get all blogs
   getBlogs(){
     this.blogService.getBlogs().subscribe(blogs =>{
       this.allBlogs = blogs.posts
+      console.log(this.allBlogs)
     })
   }
+  // add like to post
+  addLike(id){
+    var user =  this.authService.getUserData()
+    this.username = user.username
+    console.log(this.username)
+    this.blogService.likeBlog(id, this.username).subscribe(data =>{
+      console.log(data)
+      if(data.success === true){
+        this.color = 'liked'
+      }
+      this.getBlogs()
+    })
+  }
+   // add dislike to post
+   addDislike(id){
+     var user =  this.authService.getUserData()
+    this.username = user.username
+    this.blogService.dislikeBlog(id,this.username).subscribe(data =>{
+      
+      this.getBlogs()
+    })
+  }
+   // delete blog post
   deleteBlog(id){
     this.blogService.deleteBlog(id).subscribe(res=>{
       if(!res){
@@ -128,9 +201,19 @@ export class BlogComponent implements OnInit {
       }
     })
   }
+
   goBack(){
     window.location.reload()
   }
+  // on page reload
+  reloadBlog(){
+    this.loadingPage = true
+    this.getBlogs()
+    setTimeout(()=>{
+      this.loadingPage = false
+    },4000)
+  }
+  // on page load
   ngOnInit() {
     var user =  this.authService.getUserData()
     this.username = user.username

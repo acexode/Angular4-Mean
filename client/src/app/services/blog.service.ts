@@ -40,5 +40,21 @@ export class BlogService {
     this.createHeaders()
     return this.http.delete(this.domain+'blog/post/'+id, this.options).map(res => res.json())
   }
+  likeBlog(id, username){
+    const blogData = { id: id, username: username}
+    this.createHeaders()
+    return this.http.put(this.domain+'blog/like/', blogData, this.options).map(res => res.json())
+  }
+  dislikeBlog(id,username){
+    const blogData = { id: id, username: username}
+    this.createHeaders()
+    return this.http.put(this.domain+'blog/dislike/', blogData, this.options).map(res => res.json())
+  }
+
+  createComment(id, comment, username){
+    const comments = {id: id, comment: comment, username: username}
+    this.createHeaders
+    return this.http.post(this.domain+'blog/comments/', comments, this.options).map(res=> res.json())
+  }
 
 }

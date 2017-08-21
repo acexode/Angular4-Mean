@@ -100,6 +100,172 @@ module.exports = (router) => {
             }
         })
     });
+    router.put('/like', (req, res) => {
+        if (!req.body.id) {
+            res.json({ success: false, message: 'no id was passed' })
+        } else {
+            Blog.findOne({ _id: req.body.id }, {}, (err, posts) => {
+                if (err) {
+                    res.json({ success: false, message: 'Invalid Id' })
+                } else {
+                    if (!posts) {
+                        res.json({ success: false, message: 'no post was found' })
+                    } else {
+                        console.log(req.body.id)
+                        console.log(req.body.username)
+                        User.findOne({ username: req.body.username }, (err, user) => {
+                            if (err) {
+                                res.json({ success: false, message: err })
+                            } else {
+                                if (!user) {
+                                    res.json({ success: false, message: 'user not found:' })
+                                } else {
+                                    if (user.username === posts.createdBy) {
+                                        res.json({ success: false, message: 'cannot like your own post' })
+                                    } else {
+                                        if (posts.likedBy.includes(user.username)) {
+                                            res.json({ success: false, message: 'You already liked this post' })
+                                        } else {
+                                            if (posts.dislikedBy.includes(user.username)) {
+                                                posts.dislikes--;
+                                                const ArrayIndex = posts.dislikedBy.indexOf(user.username)
+                                                posts.dislikedBy.splice(ArrayIndex, 1)
+                                                posts.likes++
+                                                    posts.likedBy.push(user.username)
+                                                posts.save((err) => {
+                                                    if (err) {
+                                                        res.json({ success: false, message: 'something went wrong' })
+                                                    } else {
+                                                        res.json({ success: true, message: 'post liked!' })
+                                                    }
+                                                })
+                                            } else {
+                                                posts.likes++
+                                                    posts.likedBy.push(user.username)
+                                                posts.save((err) => {
+                                                    if (err) {
+                                                        res.json({ success: false, message: 'something went wrong' })
+                                                    } else {
+                                                        res.json({ success: true, message: 'post liked!' })
+                                                    }
+                                                })
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+
+        }
+    });
+    router.put('/dislike', (req, res) => {
+        if (!req.body.id) {
+            res.json({ success: false, message: 'no id was passed' })
+        } else {
+            Blog.findOne({ _id: req.body.id }, {}, (err, posts) => {
+                if (err) {
+                    res.json({ success: false, message: 'Invalid Id' })
+                } else {
+                    if (!posts) {
+                        res.json({ success: false, message: 'no post was found' })
+                    } else {
+                        console.log(req.body.id)
+                        console.log(req.body.username)
+                        User.findOne({ username: req.body.username }, (err, user) => {
+                            if (err) {
+                                res.json({ success: false, message: err })
+                            } else {
+                                if (!user) {
+                                    res.json({ success: false, message: 'user not found:' })
+                                } else {
+                                    if (user.username === posts.createdBy) {
+                                        res.json({ success: false, message: 'cannot dislike your own post' })
+                                    } else {
+                                        if (posts.dislikedBy.includes(user.username)) {
+                                            res.json({ success: false, message: 'You already disliked this post' })
+                                        } else {
+                                            if (posts.likedBy.includes(user.username)) {
+                                                posts.likes--;
+                                                const ArrayIndex = posts.likedBy.indexOf(user.username)
+                                                posts.likedBy.splice(ArrayIndex, 1)
+                                                posts.dislikes++
+                                                    posts.dislikedBy.push(user.username)
+                                                posts.save((err) => {
+                                                    if (err) {
+                                                        res.json({ success: false, message: 'something went wrong' })
+                                                    } else {
+                                                        res.json({ success: true, message: 'post disliked!' })
+                                                    }
+                                                })
+                                            } else {
+                                                posts.dislikes++
+                                                    posts.dislikedBy.push(user.username)
+                                                posts.save((err) => {
+                                                    if (err) {
+                                                        res.json({ success: false, message: 'something went wrong' })
+                                                    } else {
+                                                        res.json({ success: true, message: 'post disliked!' })
+                                                    }
+                                                })
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+
+        }
+    });
+    // comments
+    router.post('/comments', (req, res) => {
+        req.checkBody('id', 'id is required').notEmpty()
+        req.checkBody('comment', 'comment is required').notEmpty()
+        req.checkBody('username', 'username is required').notEmpty()
+        var errors = req.validationErrors();
+        if (errors) {
+            console.log(errors)
+            res.send(errors)
+        } else {
+            Blog.findOne({ _id: req.body.id }, (err, post) => {
+                if (err) {
+                    res.json({ success: false, message: err })
+                } else {
+                    if (!post) {
+                        res.json({ success: false, message: 'no post found' })
+                    } else {
+                        User.findOne({ username: req.body.username }, (err, user) => {
+                            if (err) {
+                                res.json({ success: false, message: err })
+                            } else {
+                                if (!user) {
+                                    res.json({ success: false, message: 'user not found' })
+                                } else {
+                                    console.log(req.body.comment)
+                                    post.comments.push({
+                                        comment: req.body.comment,
+                                        commentator: user.username
+                                    })
+                                    post.save((err) => {
+                                        if (err) {
+                                            res.json({ success: false, message: 'err commenting' })
+                                        } else {
+                                            res.json({ success: true, message: 'comment saved' })
+                                        }
+                                    })
+                                }
+                            }
+                        })
+                    }
+                }
+            })
+        }
+    })
 
     return router
 }
