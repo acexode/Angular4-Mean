@@ -8,8 +8,8 @@ const express = require('express'),
     bodyParser = require('body-parser'),
     config = require('./config/db.js'),
     auth = require('./routes/auth.js')(router),
-    blog = require('./routes/blog.js')(router)
-
+    blog = require('./routes/blog.js')(router),
+    port = process.env.PORT || 3000
 
 mongoose.Promise = global.Promise
 mongoose.connect(config.uri, { useMongoClient: true }, (err) => {
@@ -44,14 +44,14 @@ app.use(expressValidator({
         };
     }
 }));
-app.use(express.static(__dirname + '/client/dist/'))
+app.use(express.static(__dirname + '/public'))
 app.use('/auth', auth)
 app.use('/blog', blog)
 app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/client/dist/index.html'));
+    res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
-port = 3000
+
 app.listen(port, () => {
     console.log(`listening on port ${port}`)
 });

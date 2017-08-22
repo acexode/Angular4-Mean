@@ -1,8 +1,8 @@
 const crypto = require('crypto').randomBytes(256).toString('hex');
 
 module.exports = {
-    uri: 'mongodb://localhost:27017/Mean-ng',
+    uri: 'mongodb://Myself:myself@ds151153.mlab.com:51153/acecodedb',
     secret: crypto,
-    db: 'Mean-ng'
+    db: 'acecodedb'
 
 }
